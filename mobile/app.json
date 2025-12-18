@@ -1,0 +1,14 @@
+{
+  "expo": {
+    "name": "Sports Predictor",
+    "slug": "sports-predictor",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "platforms": ["ios", "android", "web"],
+    "assetBundlePatterns": ["**/*"],
+    "extra": {
+      "apiBase": "http://localhost:8000/api"
+    }
+  }
+}
