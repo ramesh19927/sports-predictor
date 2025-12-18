@@ -5,12 +5,12 @@ from typing import List, Optional
 from fastapi import Depends, FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 
-from .config import get_settings
-from .models.prediction import ConfidenceTier, EventSummary, Prediction
-from .services.analyst import AnalystAggregator
-from .services.ingestion import DataIngestionService
-from .services.prediction_engine import PredictionEngine, PredictionInputs
-from .services.repository import PredictionRepository
+from app.config import get_settings
+from app.models.prediction import ConfidenceTier, EventSummary, Prediction
+from app.services.analyst import AnalystAggregator
+from app.services.ingestion import DataIngestionService
+from app.services.prediction_engine import PredictionEngine, PredictionInputs
+from app.services.repository import PredictionRepository
 
 settings = get_settings()
 app = FastAPI(title="Sports Predictor", version="0.1.0")
