@@ -4,6 +4,17 @@ from typing import List, Optional
 
 from fastapi import Depends, FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
+import sys
+from pathlib import Path as _Path
+
+# When this module is executed directly (python backend/app/main.py) the
+# package context is not set which breaks relative imports like
+# `from .config import ...`. Ensure the package root is on `sys.path` and
+# set `__package__` so subsequent relative imports succeed.
+if __package__ is None:
+    package_root = _Path(__file__).resolve().parents[1]
+    sys.path.insert(0, str(package_root))
+    __package__ = "app"
 
 from .config import get_settings
 from .models.prediction import ConfidenceTier, EventSummary, Prediction
@@ -123,3 +134,16 @@ def _group_events(repo: PredictionRepository, start: datetime, end: datetime) ->
         for (event, date), group in events.items()
     ]
     return sorted(summaries, key=lambda e: e.event_date)
+
+
+if __name__ == "__main__":
+    # Start the app with Uvicorn when executing this file directly.
+    # This makes `python backend/app/main.py` behave similarly to
+    # `uvicorn app.main:app` while preserving package-relative imports.
+    try:
+        import uvicorn
+
+        uvicorn.run("app.main:app", host="127.0.0.1", port=8000, reload=True)
+    except Exception:
+        # If Uvicorn is not available in the environment, print a helpful hint.
+        print("Uvicorn is required to run the server. Run: pip install uvicorn")
